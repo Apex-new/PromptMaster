@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PromptMaster</title>
+    <!-- Import Roboto font with fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset and Global Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif; /* Added fallback font */
+            background-color: #000000;
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+
+        /* App Container */
+        .app-container {
+            width: 100%;
+            max-width: 720px;
+            height: calc(100vh - 40px);
+            max-height: 1440px;
+            overflow-y: auto;
+            background-color: #000000;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Screen Sections */
+        .screen {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding-bottom: 80px;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Common Elements */
+        h1, h2 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #0066cc;
+            color: #FFFFFF;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #004c99;
+        }
+
+        /* Home Screen Specific Styles */
+        #home-screen .logo {
+            width: 200px;
+            height: 100px;
+            margin: 30px auto;
+        }
+
+        #home-screen h1 {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        #home-screen input[type="text"] {
+            width: 90%;
+            max-width: 300px;
+            height: 40px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: #FFFFFF; /* Ensure text is visible */
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        #home-screen input[type="text"]::placeholder {
+            color: #888;
+        }
+
+        /* Templates Screen Specific Styles */
+        #templates-screen h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        #templates-screen .prompt-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+            width: 90%;
+            max-width: 400px;
+            max-height: 60vh;
+            overflow-y: auto;
+            background-color: #1a1a1a;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        #templates-screen .prompt-list li {
+            padding: 20px; /* Increased padding for readability */
+            border-bottom: 1px solid #333;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        #templates-screen .prompt-list li:last-child {
+            border-bottom: none;
+        }
+
+        #templates-screen .prompt-list li:hover {
+            background-color: #2a2a2a;
+        }
+
+        /* Tutorials Screen Specific Styles */
+        #tutorials-screen h2 {
+            font-size: 20px;
+            margin-bottom: 25px;
+        }
+
+        #tutorials-screen .tutorial-links {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 30px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #tutorials-screen .tutorial-links li {
+            margin-bottom: 15px;
+        }
+
+        #tutorials-screen .tutorial-links a {
+            color: #0066cc;
+            text-decoration: underline;
+            font-size: 16px;
+        }
+
+        #tutorials-screen .tutorial-links a:hover {
+            color: #0088ff;
+        }
+
+        #tutorials-screen .feedback-button {
+            margin-bottom: 20px; /* Increased spacing */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- Home Screen -->
+        <section id="home-screen" class="screen active">
+            <img src="promptmaster_logo.png" alt="PromptMaster Logo" class="logo">
+            <h1>Master Grok with PromptMaster!</h1>
+            <input type="text" id="goal-input" placeholder="Enter your goal (e.g., research AI trends)">
+            <button class="nav-button" data-target="templates-screen">Get Prompt</button>
+            <button class="nav-button" data-target="tutorials-screen" style="margin-top: 15px; background-color: #444;">Tutorials</button>
+        </section>
+
+        <!-- Templates Screen -->
+        <section id="templates-screen" class="screen">
+            <h2>Choose a Prompt</h2>
+            <ul class="prompt-list" id="prompt-list">
+                <!-- Prompts will be populated dynamically -->
+            </ul>
+            <button class="nav-button" data-target="home-screen">Back</button>
+        </section>
+
+        <!-- Tutorials Screen -->
+        <section id="tutorials-screen" class="screen">
+            <h2>Learn to Master Grok</h2>
+            <ul class="tutorial-links">
+                <li><a href="https://prompt-master.blogspot.com/" target="_blank" rel="noopener noreferrer">Tutorial 1: 5 Mistakes to Avoid</a></li>
+                <li><a href="https://prompt-master.blogspot.com/" target="_blank" rel="noopener noreferrer">Tutorial 2: 3 Prompt Hacks</a></li>
+                <li><a href="https://prompt-master.blogspot.com/" target="_blank" rel="noopener noreferrer">Tutorial 3: Why PromptMaster Helps</a></li>
+            </ul>
+            <button class="feedback-button" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLScBYC9TxLrtOUnpLBAZvzcuEHKUWaZjGtP6o1DSjRhdg6gSAA/viewform', '_blank')">
+                Give Feedback
+            </button>
+            <button class="nav-button" data-target="home-screen">Back</button>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get all screen elements and navigation buttons
+            const screens = document.querySelectorAll('.screen');
+            const navButtons = document.querySelectorAll('.nav-button');
+            const goalInput = document.getElementById('goal-input');
+            const promptList = document.getElementById('prompt-list');
+
+            // Function to show a specific screen
+            function showScreen(screenId) {
+                screens.forEach(screen => screen.classList.remove('active'));
+                const targetScreen = document.getElementById(screenId);
+                if (targetScreen) {
+                    targetScreen.classList.add('active');
+                    document.querySelector('.app-container').scrollTop = 0;
+                } else {
+                    console.error(`Screen with id "${screenId}" not found.`);
+                }
+            }
+
+            // Add click event listeners to navigation buttons
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetScreenId = button.getAttribute('data-target');
+                    if (targetScreenId) showScreen(targetScreenId);
+                });
+            });
+
+            // Fetch prompts from Google Sheets
+            const SHEET_ID = '1ax-3LkFSWZbFrMNayCFBZuciTbVUvgC6IvB48H-sTXQ';
+            const API_KEY = 'AIzaSyB77MLMXa_ePUBPgnYh1pns8_OHBANxH3Q'; // Replace with your API key
+            const RANGE = 'Sheet1!A2:D11';
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const prompts = data.values; // Array of rows [ID, Category, Prompt Text, Example Use Case]
+                    promptList.innerHTML = ''; // Clear placeholder prompts
+                    prompts.forEach((row, index) => {
+                        const li = document.createElement('li');
+                        const category = row[1]; // Category
+                        const promptText = row[2]; // Prompt Text
+                        li.textContent = `${category}: ${promptText}`;
+                        li.dataset.promptText = promptText; // Store prompt text for selection
+                        li.dataset.category = category;
+                        promptList.appendChild(li);
+
+                        // Add click event to copy prompt to input
+                        li.addEventListener('click', () => {
+                            goalInput.value = `${category}: ${promptText}`;
+                            showScreen('home-screen');
+                        });
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching prompts:', error);
+                    promptList.innerHTML = '<li>Error loading prompts. Please try again later.</li>';
+                });
+        });
+    </script>
+</body>
+</html>
